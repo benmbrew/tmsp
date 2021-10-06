@@ -62,7 +62,7 @@ def relativeVF(S, P, J, u, r):
             Q[z,z] = 1
     '''
            
-    rhs    = r - J*np.ones((len(S),1))
+    rhs = r - J*np.ones((len(S),1))
     rhs[z] = 0
     return np.linalg.solve(Q, rhs)
     
@@ -74,18 +74,18 @@ def solve_mdp(S, R, A, P):
     # Assumed that state space of the form S = {0, 1, ..., N-1}
     # u denotes control, pi stationary distributions
     
-    N     = len(S)
-    uold  = [-1]*N
-    unew  = [A[s][0] for s in S]
-    r     = np.zeros((N, 1))
+    N = len(S)
+    uold = [-1]*N
+    unew = [A[s][0] for s in S]
+    r = np.zeros((N, 1))
     iters = 0
 
     # In some cases, policies oscillate, due to floating point precision
     #   concerns. Alternate termination criterion: if the average cost
     #   associated with policies in two consecutive iterations differ by
     #   less than a prespecified threshold epsilon
-    Jold   = 0
-    Jnew   = 1
+    Jold = 0
+    Jnew = 1
     
     while uold != unew and abs(Jnew - Jold) > 1e-7:
         uold = list(unew)
@@ -95,9 +95,9 @@ def solve_mdp(S, R, A, P):
         for s in S:
             r[s]   = R[s,uold[s]]
             
-        pi   = stationaryDist(S, P, uold)
+        pi = stationaryDist(S, P, uold)
         Jnew = np.dot(r.T,pi)
-        h    = relativeVF(S, P, Jnew, uold, r)
+        h = relativeVF(S, P, Jnew, uold, r)
 
         # Solving optimality equations for updated policy
         for s in S:

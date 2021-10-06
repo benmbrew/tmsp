@@ -1,5 +1,4 @@
 import numpy as np
-
 # No buffer or queue
 
 class instance:
@@ -12,6 +11,7 @@ def build_mdp(I, debug):
     S = range(N)
 
     # Uniformization constant, uniformized parameters
+    # arrival rates and service completion divided by the maximal rate
     lh = float(I.lamH)/I.L
     ll = float(I.lamL)/I.L
     mu = float(I.mu)/I.L
@@ -20,12 +20,12 @@ def build_mdp(I, debug):
     # If j = 0, but there are spare ALS units, then...
     # Action 0: Redirect next BLS call
     # Action 1: Route next BLS call to ALS unit
-    #
     # Otherwise, a dummy action.
     
     A = {}
     for s in S:
         i, j = I.lookup[s]
+        # if we are in the boundary condition, then assign two options to the action
         if i < I.NA and j == I.NB:
             A[s] = [0, 1]
         else:
@@ -44,7 +44,7 @@ def build_mdp(I, debug):
         elif j < I.NB:
             R[s,:] = lh*I.RHB + ll*I.RL
     
-    # Transition probability matrices
+    # Transition probability matrices - two matrices of size 174*174
     # P[a][i][j] - One-step transition prob. from states i to j under action a
     P = np.zeros((2,N,N))
 
@@ -87,10 +87,12 @@ def build_dicts(I):
     revlookup = {}
     count = 0
     
-    for i in xrange(I.NA + 1):
-        for j in xrange(I.NB + 1):
+    for i in range(I.NA + 1):
+        for j in range(I.NB + 1):
                     lookup[count] = (i, j)
                     revlookup[(i,j)] = count
                     count += 1
                     
     return lookup, revlookup
+
+

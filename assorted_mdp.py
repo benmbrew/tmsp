@@ -1,5 +1,5 @@
-import base_model_sparse
-import policy_iteration_sparse
+#import base_model_sparse
+#import policy_iteration_sparse
 import numpy as np
 
 # Given a problem instance I for our MDP, determines the minimum number of
@@ -9,13 +9,13 @@ import numpy as np
 #   unavailable whenever Action 1 is available.
 
 def find_budget(I, u):
-    fleet_size = 0
-    util       = 1
+    fleet_size=0
+    util=1
 
     while util > u:
         I.NA = fleet_size
         I.NB = 0
-        I.L  = I.lamH + I.lamL + (I.NA + I.NB)*I.mu
+        I.L = I.lamH + I.lamL + (I.NA + I.NB)*I.mu
 
         # Construct MDP instance
         S, R, A, P =  base_model_sparse.build_mdp(I, False)
@@ -57,7 +57,7 @@ def find_budget_alternate(I, p):
         _, _, _, pi, _ = policy_iteration_sparse.solve_mdp(S, R, A, P)
         prob           = float(1 - pi[-1])
 
-        print fleet_size, prob
+        print(fleet_size, prob)
         
     return fleet_size*I.CA
 
@@ -80,7 +80,7 @@ def getMDPparams(I, A, u, pi):
     # Hsvc = Fraction of time at least one ALS unit free
     # Lsvc = Fraction of time at least one BLS unit free, or ALS unit free
     #           and policy does not redirect low-priority calls
-    for s in xrange(len(pi)):
+    for s in range(len(pi)):
         i, j = I.lookup[s]
         if i < I.NA:
             Hsvc += pi[s]
@@ -113,7 +113,7 @@ def getLPparams(I, A, u, pi):
     num   = 0.0
     denom = 0.0
 
-    for s in xrange(len(pi)):
+    for s in range(len(pi)):
         i, j  = I.lookup[s]
 
         if I.NA > 0:
