@@ -7,10 +7,10 @@ def stationaryDist(S, P, u):
     for s in S:
         M[s,:] = P[u[s]][s]
 
-    z      = len(S) - 1
-    Q      = np.eye(len(S))- M.T
+    z = len(S) - 1
+    Q = np.eye(len(S))- M.T
     Q[z,:] = 1
-    rhs    = np.zeros((len(S),1))
+    rhs = np.zeros((len(S),1))
     rhs[z] = 1
 
     '''

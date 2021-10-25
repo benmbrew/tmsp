@@ -4,12 +4,10 @@ import policy_iteration
 import numpy as np
 from matplotlib import pyplot as plt
 
-
 ### This script is the main file to produce the first plot in Chong Vehicle mix paper
 
 class instance:
     pass
-
 
 def create_output(I, fileName):
     # Set of feasible fleets
@@ -71,23 +69,23 @@ def read_output(fileName):
     return xaxis, yaxis, fleets
 
 
+# inputs to the MDP --------------
 I = instance()
-I.RHA = 1
-I.RHB = 0.5
-I.RL = 0.6
-I.lamH = 8.1
-I.lamL = 13.1
-I.mu = 0.75
-I.CA = 1.25
-I.CB = 1
-high = 1  # Utilization or service level based budget?
-I.budget = 87.5
+I.RHA = 1 # reward for an ALS completing a high priority call
+I.RHB = 0.5 # reward for an BLS completing a low priority call
+I.RL = 0.6 # reward for dispatching ALS or BLS to low priority call
+I.lamH = 8.1 # arrival rate (per hour) of high priority calls
+I.lamL = 13.1 # arrival rate (per hour) of low priority calls
+I.mu = 0.75 # service completion rate (hourly)
+I.CA = 1.25 # cost of an ALS vehicle (as a ratio to BLS)
+I.CB = 1 # cost of BLS vehicle
+I.budget = 87.5 # Budget
 
 # create output and read it in.
 xaxis, yaxis, fleets = create_output(I, 'basecase_output.txt')
 xaxis, yaxis, fleets = read_output('basecase_output.txt')
 
-# Mixture plot
+# Mixture plot (from first figure)
 plt.plot(xaxis, yaxis, linewidth=2)
 plt.xlabel('ALS Fleet Size', fontsize=15)
 plt.ylabel('Long-Run Avg. Reward', fontsize=15)
@@ -97,13 +95,6 @@ plt.xlim([0, fleets[-1][0]])
 plt.ylim([10, int(max(yaxis)) + 1])
 plt.legend(loc=4, prop={'size': 12})
 plt.grid(linewidth=1)
-
-if high:
-    plt.savefig('basecase.pdf')
-else:
-    plt.savefig('blah.pdf')
-    # plt.savefig('basecase2.pdf')
-
 plt.show()
 plt.close('all')
 

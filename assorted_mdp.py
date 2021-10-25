@@ -55,7 +55,7 @@ def find_budget_alternate(I, p):
 
         # Obtain stationary distribution induced by this policy
         _, _, _, pi, _ = policy_iteration_sparse.solve_mdp(S, R, A, P)
-        prob           = float(1 - pi[-1])
+        prob = float(1 - pi[-1])
 
         print(fleet_size, prob)
         
