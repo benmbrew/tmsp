@@ -3,7 +3,7 @@ import numpy as np
 def stationaryDist(S, P, u):
     # Given a policy u, and the transition matrices of a given state-action
     #   pair, computes the stationary distribution of the induced Markov chain.
-    M      = np.empty((len(S), len(S)))
+    M = np.empty((len(S), len(S)))
     for s in S:
         M[s,:] = P[u[s]][s]
 
