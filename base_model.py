@@ -1,6 +1,10 @@
 import numpy as np
 # No buffer or queue
 
+# --------------------------------
+### This script has the code for the building the mdp (matrices necessary for policy iteration)
+# --------------------------------
+
 class instance:
     pass
 
