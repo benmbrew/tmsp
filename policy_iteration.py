@@ -67,6 +67,7 @@ def relativeVF(S, P, J, u, r):
     return np.linalg.solve(Q, rhs)
     
     
+#this function takes the State, Reward, Action, and Probability matrices and return the reward
 
 def solve_mdp(S, R, A, P):
     # Policy iteration. Outputs the optimal policy, as well as the associated
@@ -74,9 +75,9 @@ def solve_mdp(S, R, A, P):
     # Assumed that state space of the form S = {0, 1, ..., N-1}
     # u denotes control, pi stationary distributions
     
-    N = len(S)
-    uold = [-1]*N
-    unew = [A[s][0] for s in S]
+    N = len(S) # get number of states
+    uold = [-1]*N # control initially same length as state, filled with -1
+    unew = [A[s][0] for s in S] # gets only the 0 action
     r = np.zeros((N, 1))
     iters = 0
 
@@ -86,25 +87,29 @@ def solve_mdp(S, R, A, P):
     #   less than a prespecified threshold epsilon
     Jold = 0
     Jnew = 1
-    
+
+    # while this condition is true, run the following.
+    # Keep running the iteration until its stable uold=unew
     while uold != unew and abs(Jnew - Jold) > 1e-7:
         uold = list(unew)
         Jold = Jnew
         
         # Trans. matrix, reward vector
+        # for each state get the reward based on the uniformized probabilities
         for s in S:
-            r[s] = R[s,uold[s]]
+            r[s] = R[s,uold[s]] # get the reward for state s and action 0
             
-        pi = stationaryDist(S, P, uold)
-        Jnew = np.dot(r.T,pi)
-        h = relativeVF(S, P, Jnew, uold, r)
+        pi = stationaryDist(S, P, uold) # get the stationary distribution
+        Jnew = np.dot(r.T,pi) # get the dot product of the reward vector and the stationary distribution
+        h = relativeVF(S, P, Jnew, uold, r) # relative value function
 
         # Solving optimality equations for updated policy
+        # for each state, calculate the value function for each action
         for s in S:
             bestv = -9999
             
             for a in A[s]:
-                v = R[s,a] + np.dot(P[a][s], h)
+                v = R[s,a] + np.dot(P[a][s], h) # the value function
                 if v > bestv:
                     bestv   = v
                     unew[s] = a
