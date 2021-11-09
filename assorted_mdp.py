@@ -117,10 +117,10 @@ def getLPparams(I, A, u, pi):
         i, j  = I.lookup[s]
 
         if I.NA > 0:
-            pA   += i*pi[s]/I.NA
+            pA += i*pi[s]/I.NA
             
         if I.NB > 0:
-            pB   += j*pi[s]/I.NB
+            pB += j*pi[s]/I.NB
 
         if 1 in A[s]:
             denom += pi[s]

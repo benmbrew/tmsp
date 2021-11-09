@@ -93,7 +93,7 @@ def solve_mdp(S, R, A, P):
         
         # Trans. matrix, reward vector
         for s in S:
-            r[s]   = R[s,uold[s]]
+            r[s] = R[s,uold[s]]
             
         pi = stationaryDist(S, P, uold)
         Jnew = np.dot(r.T,pi)
