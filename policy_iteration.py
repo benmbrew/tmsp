@@ -111,8 +111,8 @@ def solve_mdp(S, R, A, P):
             for a in A[s]:
                 v = R[s,a] + np.dot(P[a][s], h) # the value function
                 if v > bestv:
-                    bestv   = v
-                    unew[s] = a
+                    bestv = v
+                    unew[s] = a # this will eventually add action zero to unew and uold
 
         iters += 1
 

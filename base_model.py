@@ -48,7 +48,7 @@ def build_mdp(I, debug):
                 # times the reward for servicing a low priority call
                 R[s,:] = lh*I.RHA + ll*I.RL
             else:
-                # if there are spare ALS (i < I.NB) but all BLS are busy (j >= to I.NB),
+                # if there are spare ALS (i < I.NA) but all BLS are busy (j = to I.NB),
                 # then the reward for taking action zero (redirecting the call, ignoring BLS) is the probability of a high priority call times
                 # the reward for servicing a high priority call
                 R[s,0] = lh*I.RHA
@@ -71,7 +71,7 @@ def build_mdp(I, debug):
         # get the number of active ALS and BLS for each state
         i, j = I.lookup[s]
 
-        # generally just 0, but 0 and 1 for state spaces with two possible actions. If zero, it filles
+        # generally just 0, but 0 and 1 for state spaces with two possible actions. If zero, it files
         # the probability matrix for action 0, if 1 it filles the probability matrix for action 1
         for a in A[s]:
             # ALS arrivals (if ALS has idle vehicles, then assign the probability of a high priority call
