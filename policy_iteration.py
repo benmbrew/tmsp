@@ -109,7 +109,6 @@ def solve_mdp(S, R, A, P):
             bestv = -9999
 
             for a in A[s]:
-                # The second term appears to always be zero, so the function essentially gets the reward from the reward
                 # matrix for each state and action
                 v = R[s,a] + np.dot(P[a][s], h) # the value function.
                 if v > bestv: # determines which action is better
