@@ -113,7 +113,7 @@ def solve_mdp(S, R, A, P):
                 v = R[s,a] + np.dot(P[a][s], h) # the value function.
                 if v > bestv: # determines which action is better
                     bestv = v
-                    unew[s] = a # this will eventually add action zero to unew and uold
+                    unew[s] = a
 
         iters += 1
 
