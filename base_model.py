@@ -61,7 +61,7 @@ def build_mdp(I, debug):
             # servicing a low priority call.
             R[s,:] = lh*I.RHB + ll*I.RL
     
-    # Transition probability matrices - two matrices of size 174*174
+    # Transition probability matrices - two matrices of size SxS where S is the total number of states
     # P[a][i][j] - One-step transition prob. from states i to j under action a
     P = np.zeros((2,N,N)) # P is a list of two matrices. The matrices are equivalent except for states that require an action
     #
@@ -80,6 +80,7 @@ def build_mdp(I, debug):
             # if ALS are all busy, but BLS has capacity, then
             elif j < I.NB:
                 P[a][s][I.revlookup[(i, j+1)]] += lh
+                # the += operator adds the values together and assigns the final value (lh) to a variable.
 
             # BLS arrival (if BLS has idle vehicles)
             if j < I.NB:

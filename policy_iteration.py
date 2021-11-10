@@ -44,7 +44,7 @@ def relativeVF(S, P, J, u, r):
     for s in S:
         M[s,:] = P[u[s]][s]
         
-    Q      = np.eye(len(S)) - M
+    Q = np.eye(len(S)) - M
     Q[z,:] = 0
     Q[z,z] = 1
 
@@ -89,7 +89,7 @@ def solve_mdp(S, R, A, P):
     Jnew = 1
 
     # while this condition is true, run the following.
-    # Keep running the iteration until its stable uold=unew
+    # Keep running the iteration until its stable uold=unew and Jnew~Jold
     while uold != unew and abs(Jnew - Jold) > 1e-7:
         uold = list(unew)
         Jold = Jnew
@@ -97,8 +97,8 @@ def solve_mdp(S, R, A, P):
         # Trans. matrix, reward vector
         # for each state get the reward based on the uniformized probabilities
         for s in S:
-            r[s] = R[s,uold[s]] # get the reward for state s and action 0
-            
+            r[s] = R[s,uold[s]] # get the reward for state and action
+
         pi = stationaryDist(S, P, uold) # get the stationary distribution
         Jnew = np.dot(r.T,pi) # get the dot product of the reward vector and the stationary distribution
         h = relativeVF(S, P, Jnew, uold, r) # relative value function
@@ -107,10 +107,12 @@ def solve_mdp(S, R, A, P):
         # for each state, calculate the value function for each action
         for s in S:
             bestv = -9999
-            
+
             for a in A[s]:
-                v = R[s,a] + np.dot(P[a][s], h) # the value function
-                if v > bestv:
+                # The second term appears to always be zero, so the function essentially gets the reward from the reward
+                # matrix for each state and action
+                v = R[s,a] + np.dot(P[a][s], h) # the value function.
+                if v > bestv: # determines which action is better
                     bestv = v
                     unew[s] = a # this will eventually add action zero to unew and uold
 

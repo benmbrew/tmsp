@@ -18,7 +18,9 @@ def create_output(I, fileName):
     # divide buget by ALS cost to get maximum number of ALS vehicles
     maxALS = int(I.budget / I.CA)
     # create all the different fleet possibilities with a given budget
+    # for each value in the 0 to 71 subtract that value i*CA from the budget
     fleets = [(i, int((I.budget - i * I.CA) / I.CB)) for i in range(maxALS + 1)]
+
     # define the x axis range (0-70 in the base case)
     xaxis = range(maxALS + 1)
 
@@ -50,13 +52,15 @@ def create_output(I, fileName):
         # the code below is not used in mdp but we removed the S from getLPparams in order for it to run (only takes 4 arguments, not 5).
         LPparams[i] = getLPparams(I, P, A, u)
         # add reward to y axis
-        yaxis[i] = I.L * J
+        yaxis[i] = I.L * J # multiplies the maximal rate and the uniformized reward which converts the reward back to the normal value.
 
     # Writing output to file
     with open(fileName, 'w') as f:
         f.write('%i\n' % len(fleets))
-        for i in range(len(fleets)):
+        for i in range(len(fleets)): # for loop to write each line of the .txt file
             f.write('%i %i %.8f \n' % (fleets[i][0], fleets[i][1], yaxis[i]))
+            # %i means write the fleets[i][0] value as a integer (same with fleets[i][1]
+            # %.8f write the yaxis[i] value with 8 decimal points
 
     # Writing IP input parameters to file
     with open('LPparams_basecase.txt', 'w') as f:
@@ -98,8 +102,8 @@ I.CB = 1 # cost of BLS vehicle
 I.budget = 87.5 # Budget
 
 # create output and read it in.
-xaxis, yaxis, fleets = create_output(I, 'basecase_output.txt')
-xaxis, yaxis, fleets = read_output('basecase_output.txt')
+xaxis, yaxis, fleets = create_output(I, 'basecase_output.txt') # save the file basecase_output.txt
+xaxis, yaxis, fleets = read_output('basecase_output.txt') # read in the file basecase_output.txt
 
 # Mixture plot (from first figure)
 plt.plot(xaxis, yaxis, linewidth=2) # create basic line plot with number of ALS on x axis and corresponding long run avg reward on y axis
